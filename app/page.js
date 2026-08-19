@@ -1133,13 +1133,6 @@ function Footer({ onNavigate, onBuy }) {
               >
                 {CONFIG.PHONE}
               </a>
-              <button
-                onClick={onBuy}
-                className="mt-4 w-full sm:w-auto inline-flex justify-center px-6 py-3 text-xs font-bold uppercase tracking-widest text-black"
-                style={{ backgroundColor: GREEN }}
-              >
-                Buy Membership
-              </button>
             </div>
           </div>
         </div>
