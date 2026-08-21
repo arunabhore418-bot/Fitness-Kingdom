@@ -1,15 +1,23 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Fitness Kingdom — Premium Gym & Fitness Center in Sangli',
+  title: 'Fitness Kingdom - Best Premium Gym in Sangli',
   description: 'Fitness Kingdom is a premium fitness destination with four branches across Sangli. Explore our locations, coaches, memberships, and start your fitness journey.',
   openGraph: {
-    title: 'Fitness Kingdom — Premium Gym & Fitness Center in Sangli',
+    title: 'Fitness Kingdom - Best Premium Gym in Sangli',
     description: 'Four locations. One Fitness Kingdom. Strength starts here.',
     type: 'website',
   },
   icons: {
-    icon: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png',
+    icon: [
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '96x96', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '192x192', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '256x256', type: 'image/png' },
+    ],
+    shortcut: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png',
+    apple: [
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 
