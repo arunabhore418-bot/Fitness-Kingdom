@@ -1263,9 +1263,14 @@ function Footer({ onNavigate, onBuy }) {
           <div className="text-white/40 text-xs">
             © {year} Fitness Kingdom. All rights reserved.
           </div>
-          <div className="text-white/40 text-xs uppercase tracking-[0.3em]">
-            Strength Starts Here.
-          </div>
+          <a
+            href="https://fitnesskingdomsangli.com"
+            target="_blank"
+            rel="noreferrer"
+            className="text-white/40 hover:text-white text-xs uppercase tracking-[0.3em] transition-colors"
+          >
+            www.fitnesskingdomsangli.com
+          </a>
         </div>
       </div>
     </footer>
