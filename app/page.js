@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu,
@@ -696,13 +696,27 @@ function Gallery({ onOpen }) {
 
 function Lightbox({ index, onClose }) {
   const [i, setI] = useState(index);
+  const [dir, setDir] = useState(0); // 1 = next, -1 = prev, for slide animation
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+
   useEffect(() => setI(index), [index]);
+
+  const goNext = () => {
+    setDir(1);
+    setI((v) => (v + 1) % GALLERY.length);
+  };
+  const goPrev = () => {
+    setDir(-1);
+    setI((v) => (v - 1 + GALLERY.length) % GALLERY.length);
+  };
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') setI((v) => (v + 1) % GALLERY.length);
-      if (e.key === 'ArrowLeft') setI((v) => (v - 1 + GALLERY.length) % GALLERY.length);
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
     };
     window.addEventListener('keydown', onKey);
     return () => {
@@ -711,52 +725,123 @@ function Lightbox({ index, onClose }) {
     };
   }, [onClose]);
 
+  // Touch swipe handlers (mobile) \u2014 swipe left \u2192 next, right \u2192 prev
+  const onTouchStart = (e) => {
+    const t = e.touches[0];
+    touchStartX.current = t.clientX;
+    touchStartY.current = t.clientY;
+  };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX.current;
+    const dy = t.clientY - touchStartY.current;
+    // Only trigger if horizontal swipe dominates and passes threshold
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) goNext();
+      else goPrev();
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
   const img = GALLERY[i];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[80] bg-black/95 flex items-center justify-center p-5"
+      className="fixed inset-0 z-[80] bg-black/95 flex items-center justify-center p-3 md:p-5"
       onClick={onClose}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
+      {/* Close */}
       <button
-        onClick={onClose}
-        className="absolute top-5 right-5 text-white/80 hover:text-white p-2"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        className="absolute top-4 right-4 md:top-6 md:right-6 z-10 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center border text-white hover:bg-white hover:text-black transition-colors"
+        style={{ borderColor: '#ffffff33' }}
         aria-label="Close"
       >
-        <X size={28} />
+        <X size={22} />
       </button>
+
+      {/* PREV \u2014 flat green sliding button */}
       <button
         onClick={(e) => {
           e.stopPropagation();
-          setI((v) => (v - 1 + GALLERY.length) % GALLERY.length);
+          goPrev();
         }}
-        className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 border border-white/20"
-        aria-label="Previous"
+        className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-black transition-transform hover:-translate-x-1 active:scale-95"
+        style={{ backgroundColor: GREEN }}
+        aria-label="Previous photo"
       >
-        <ArrowLeft size={22} />
+        <ArrowLeft size={22} strokeWidth={2.5} />
       </button>
+
+      {/* NEXT \u2014 flat green sliding button */}
       <button
         onClick={(e) => {
           e.stopPropagation();
-          setI((v) => (v + 1) % GALLERY.length);
+          goNext();
         }}
-        className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 border border-white/20"
-        aria-label="Next"
+        className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center text-black transition-transform hover:translate-x-1 active:scale-95"
+        style={{ backgroundColor: GREEN }}
+        aria-label="Next photo"
       >
-        <ArrowRight size={22} />
+        <ArrowRight size={22} strokeWidth={2.5} />
       </button>
-      <img
-        key={i}
-        src={img.src}
-        alt={img.alt}
-        className="max-h-[85vh] max-w-[92vw] object-contain"
-        onClick={(e) => e.stopPropagation()}
-      />
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/60 text-xs uppercase tracking-[0.3em]">
-        {i + 1} / {GALLERY.length}
+
+      {/* Animated image with directional slide */}
+      <AnimatePresence mode="wait" initial={false} custom={dir}>
+        <motion.img
+          key={i}
+          src={img.src}
+          alt={img.alt}
+          custom={dir}
+          initial={(d) => ({ opacity: 0, x: (d || 1) * 60 })}
+          animate={{ opacity: 1, x: 0 }}
+          exit={(d) => ({ opacity: 0, x: -(d || 1) * 60 })}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          className="max-h-[80vh] max-w-[88vw] object-contain select-none"
+          onClick={(e) => e.stopPropagation()}
+          draggable={false}
+        />
+      </AnimatePresence>
+
+      {/* Progress dots + counter */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
+        <div className="flex items-center gap-2">
+          {GALLERY.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setDir(idx > i ? 1 : -1);
+                setI(idx);
+              }}
+              className="h-[3px] transition-all"
+              style={{
+                width: idx === i ? 28 : 14,
+                backgroundColor: idx === i ? GREEN : '#ffffff55',
+              }}
+              aria-label={`Go to photo ${idx + 1}`}
+            />
+          ))}
+        </div>
+        <div className="text-white/70 text-xs uppercase tracking-[0.3em]">
+          {i + 1} / {GALLERY.length}
+        </div>
+      </div>
+
+      {/* Swipe hint (mobile only, subtle) */}
+      <div className="md:hidden absolute top-4 left-4 z-10 text-white/50 text-[10px] uppercase tracking-[0.3em]">
+        Swipe
       </div>
     </motion.div>
   );
