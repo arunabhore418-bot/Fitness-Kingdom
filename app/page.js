@@ -41,8 +41,13 @@ function Navbar({ onNavigate, onBuy }) {
   ];
 
   const handleClick = (id) => {
+    // If mobile menu is open, close it first and wait for the 250ms exit
+    // animation so scrollIntoView fires on a stable layout (fixes broken
+    // mobile navigation on some touch browsers).
+    const wasMenuOpen = mobileOpen;
     setMobileOpen(false);
-    onNavigate(id);
+    const delay = wasMenuOpen ? 280 : 0;
+    setTimeout(() => onNavigate(id), delay);
   };
 
   return (

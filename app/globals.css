@@ -15,6 +15,11 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* Offset scrollIntoView so section headings clear the fixed 80px navbar */
+html {
+  scroll-padding-top: 80px;
+}
+
 * { box-sizing: border-box; }
 
 .font-display {
