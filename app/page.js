@@ -286,8 +286,9 @@ function BranchesSection({ onOpen }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.55, delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              className="group relative text-left overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-[color:var(--fk-green)] transition-colors"
+              whileHover={{ y: -6 }}
+              transition={{ duration: 0.55, delay: i * 0.08 }}
+              className="group relative text-left overflow-hidden bg-neutral-950 border border-neutral-800 hover:border-[color:var(--fk-green)] transition-all duration-300"
               style={{ ['--fk-green']: GREEN }}
             >
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
@@ -308,19 +309,24 @@ function BranchesSection({ onOpen }) {
                   Branch {b.number}
                 </div>
               </div>
-              <div className="p-6 md:p-7 flex items-start justify-between gap-4">
+              <div className="p-6 md:p-7 flex items-start justify-between gap-4 relative">
                 <div className="flex-1">
-                  <h3 className="font-display text-white text-2xl md:text-3xl uppercase leading-tight">
+                  <h3 className="font-display text-white group-hover:text-[color:var(--fk-green)] text-2xl md:text-3xl uppercase leading-tight transition-colors duration-300">
                     {b.shortName}
                   </h3>
-                  <p className="mt-2 text-white/60 text-sm line-clamp-2">{b.address}</p>
+                  <p className="mt-2 text-white/60 group-hover:text-white/80 text-sm line-clamp-2 transition-colors duration-300">{b.address}</p>
                 </div>
                 <div
-                  className="shrink-0 mt-1 w-11 h-11 flex items-center justify-center border transition-colors group-hover:bg-[color:var(--fk-green)] group-hover:text-black"
+                  className="shrink-0 mt-1 w-11 h-11 flex items-center justify-center border transition-all duration-300 group-hover:bg-[color:var(--fk-green)] group-hover:text-black group-hover:translate-x-1"
                   style={{ borderColor: GREEN, color: GREEN }}
                 >
                   <ArrowRight size={18} />
                 </div>
+                {/* Flat green bottom accent line \u2014 grows on hover */}
+                <span
+                  className="absolute left-0 bottom-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
+                  style={{ backgroundColor: GREEN }}
+                />
               </div>
             </motion.button>
           ))}
@@ -455,11 +461,11 @@ function BranchDetail({ branch, onClose, onBuy }) {
                   </a>
                   <button
                     onClick={() => onBuy({ branch: branch.shortName })}
-                    className="w-full px-6 py-4 text-sm font-bold uppercase tracking-widest border transition-colors hover:bg-black flex items-center justify-center gap-2"
-                    style={{ borderColor: GREEN, color: GREEN }}
+                    className="group w-full px-6 py-4 text-sm font-bold uppercase tracking-widest border transition-all duration-300 hover:bg-[color:var(--fk-green)] hover:text-black hover:border-[color:var(--fk-green)] flex items-center justify-center gap-2"
+                    style={{ borderColor: GREEN, color: GREEN, ['--fk-green']: GREEN }}
                   >
                     Join This Branch
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               </motion.div>
@@ -519,10 +525,11 @@ function Membership({ onBuy }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              className="relative bg-neutral-950 border p-8 md:p-10 flex flex-col"
+              whileHover={{ y: -6 }}
+              className="group relative bg-neutral-950 border p-8 md:p-10 flex flex-col transition-all duration-300 hover:border-[color:var(--fk-green)]"
               style={{
                 borderColor: m.popular ? GREEN : '#1f1f1f',
+                ['--fk-green']: GREEN,
               }}
             >
               {m.popular && (
@@ -534,7 +541,7 @@ function Membership({ onBuy }) {
                   Most Popular
                 </div>
               )}
-              <div className="text-xs font-semibold tracking-[0.3em] uppercase text-white/50">
+              <div className="text-xs font-semibold tracking-[0.3em] uppercase text-white/50 group-hover:text-[color:var(--fk-green)] transition-colors duration-300">
                 {m.tag}
               </div>
               <div className="font-display text-white text-4xl md:text-5xl uppercase mt-3">
@@ -561,17 +568,19 @@ function Membership({ onBuy }) {
 
               <button
                 onClick={() => onBuy({ plan: m })}
-                className={`w-full px-6 py-4 text-sm font-bold uppercase tracking-widest transition-transform hover:scale-[1.02] flex items-center justify-center gap-2 ${
-                  m.popular ? 'text-black' : 'text-white border'
+                className={`w-full px-6 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2 ${
+                  m.popular
+                    ? 'text-black'
+                    : 'text-white border group-hover:bg-[color:var(--fk-green)] group-hover:text-black group-hover:border-[color:var(--fk-green)]'
                 }`}
                 style={
                   m.popular
                     ? { backgroundColor: GREEN }
-                    : { borderColor: GREEN, color: GREEN }
+                    : { borderColor: GREEN, color: GREEN, ['--fk-green']: GREEN }
                 }
               >
                 Buy Membership
-                <ArrowRight size={16} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
           ))}
@@ -640,14 +649,39 @@ function Gallery({ onOpen }) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
-                className={`${layouts[i]} relative overflow-hidden bg-neutral-900 group`}
+                className={`${layouts[i]} relative overflow-hidden bg-neutral-900 group border border-transparent hover:border-[color:var(--fk-green)] transition-colors duration-300`}
+                style={{ ['--fk-green']: GREEN }}
               >
                 <img
                   src={g.src}
                   alt={g.alt}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300" />
+                {/* Flat green + chip \u2014 fades in on hover */}
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center text-black font-bold text-2xl opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300"
+                  style={{ backgroundColor: GREEN }}
+                >
+                  +
+                </div>
+                {/* Corner accent lines */}
+                <span
+                  className="absolute top-0 left-0 h-[2px] w-0 group-hover:w-8 transition-all duration-300"
+                  style={{ backgroundColor: GREEN }}
+                />
+                <span
+                  className="absolute top-0 left-0 w-[2px] h-0 group-hover:h-8 transition-all duration-300"
+                  style={{ backgroundColor: GREEN }}
+                />
+                <span
+                  className="absolute bottom-0 right-0 h-[2px] w-0 group-hover:w-8 transition-all duration-300"
+                  style={{ backgroundColor: GREEN }}
+                />
+                <span
+                  className="absolute bottom-0 right-0 w-[2px] h-0 group-hover:h-8 transition-all duration-300"
+                  style={{ backgroundColor: GREEN }}
+                />
               </motion.button>
             );
           })}
