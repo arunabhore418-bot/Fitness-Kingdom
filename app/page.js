@@ -771,13 +771,13 @@ function Founder() {
             </h2>
             <div className="mt-6 h-[3px] w-20" style={{ backgroundColor: GREEN }} />
             <p className="mt-8 text-white/80 text-base md:text-lg leading-relaxed">
-              <span className="text-white font-semibold">Akash Rajput</span>, a former wrestler and
-              lifelong fitness enthusiast, has built his journey around discipline, strength, and
-              consistency. His experience in wrestling and years of commitment to fitness helped
-              shape the vision behind Fitness Kingdom.
+              <span className="text-white font-semibold">Akash Rajput</span>, a certified fitness
+              professional and lifelong fitness enthusiast, has built his journey around discipline,
+              strength, and consistency. His experience in fitness and years of commitment to
+              health and training helped shape the vision behind Fitness Kingdom.
             </p>
             <p className="mt-5 text-white/60 text-base italic">
-              From the wrestling mat to building a fitness community.
+              From a passion for fitness to building a fitness community.
             </p>
             <p className="mt-6 text-white/70 text-sm">
               Akash personally oversees all four Fitness Kingdom branches across Sangli.
