@@ -10,13 +10,14 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '96x96', type: 'image/png' },
-      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '192x192', type: 'image/png' },
-      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '256x256', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '32x32', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '96x96', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '192x192', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '256x256', type: 'image/png' },
     ],
-    shortcut: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png',
+    shortcut: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png',
     apple: [
-      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_fe50b5c6-2f00-431b-85b4-64f19ff342d6/artifacts/xuwtd4z9_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '180x180', type: 'image/png' },
+      { url: 'https://customer-assets-gfyr7b9c.emergentagent.net/job_gym-sangli/artifacts/qyoooxp0_Screenshot_2026-08-19_131312-removebg-preview.png', sizes: '180x180', type: 'image/png' },
     ],
   },
 };
