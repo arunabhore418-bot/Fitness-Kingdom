@@ -461,8 +461,8 @@ function BranchDetail({ branch, onClose, onBuy }) {
                   </a>
                   <button
                     onClick={() => onBuy({ branch: branch.shortName })}
-                    className="group w-full px-6 py-4 text-sm font-bold uppercase tracking-widest border transition-all duration-300 hover:bg-[color:var(--fk-green)] hover:text-black hover:border-[color:var(--fk-green)] flex items-center justify-center gap-2"
-                    style={{ borderColor: GREEN, color: GREEN, ['--fk-green']: GREEN }}
+                    className="group w-full px-6 py-4 text-sm font-bold uppercase tracking-widest border transition-transform duration-300 hover:scale-[1.02] flex items-center justify-center gap-2"
+                    style={{ borderColor: GREEN, color: GREEN }}
                   >
                     Join This Branch
                     <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
@@ -568,15 +568,13 @@ function Membership({ onBuy }) {
 
               <button
                 onClick={() => onBuy({ plan: m })}
-                className={`w-full px-6 py-4 text-sm font-bold uppercase tracking-widest transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-2 ${
-                  m.popular
-                    ? 'text-black'
-                    : 'text-white border group-hover:bg-[color:var(--fk-green)] group-hover:text-black group-hover:border-[color:var(--fk-green)]'
+                className={`w-full px-6 py-4 text-sm font-bold uppercase tracking-widest transition-transform duration-300 hover:scale-[1.02] flex items-center justify-center gap-2 ${
+                  m.popular ? 'text-black' : 'text-white border'
                 }`}
                 style={
                   m.popular
                     ? { backgroundColor: GREEN }
-                    : { borderColor: GREEN, color: GREEN, ['--fk-green']: GREEN }
+                    : { borderColor: GREEN, color: GREEN }
                 }
               >
                 Buy Membership
