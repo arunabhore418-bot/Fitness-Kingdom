@@ -21,10 +21,48 @@ import { CONFIG, BRANCHES, MEMBERSHIPS, GALLERY } from '@/lib/fitness-kingdom-da
 
 const GREEN = '#08CB00';
 
+/* --------- Browser back-button integration ---------
+ * Pushes a marker history entry when an overlay/menu opens so the phone's
+ * hardware back button closes the overlay instead of exiting the site.
+ * On UI-driven close, cleanly pops the marker to keep the history stack
+ * aligned. Safe to call with isOpen=true always (for conditionally-mounted
+ * components) or with a boolean toggle.
+ */
+function useBrowserBack(isOpen, onClose) {
+  useEffect(() => {
+    if (!isOpen) return;
+    if (typeof window === 'undefined') return;
+
+    window.history.pushState({ __fkOverlay: true }, '');
+
+    const handlePop = () => {
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePop);
+
+    return () => {
+      window.removeEventListener('popstate', handlePop);
+      if (
+        typeof window !== 'undefined' &&
+        window.history.state &&
+        window.history.state.__fkOverlay
+      ) {
+        // Overlay was closed via UI (X / backdrop / nav-tap), not via back
+        // button. Pop the marker so the history stack stays clean.
+        window.history.back();
+      }
+    };
+  }, [isOpen, onClose]);
+}
+
 /* ---------------------------- NAVBAR ---------------------------- */
 function Navbar({ onNavigate, onBuy }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Hardware back-button closes the mobile menu instead of exiting the site
+  useBrowserBack(mobileOpen, () => setMobileOpen(false));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -349,6 +387,9 @@ function BranchDetail({ branch, onClose, onBuy }) {
       document.body.style.overflow = '';
     };
   }, []);
+
+  // Hardware back-button closes the branch detail overlay
+  useBrowserBack(true, onClose);
 
   return (
     <motion.div
@@ -702,6 +743,9 @@ function Lightbox({ index, onClose }) {
 
   useEffect(() => setI(index), [index]);
 
+  // Hardware back-button closes the lightbox
+  useBrowserBack(true, onClose);
+
   const goNext = () => {
     setDir(1);
     setI((v) => (v + 1) % GALLERY.length);
@@ -941,6 +985,9 @@ function BuyModal({ open, initial, onClose }) {
   }, [open]);
 
   const plan = MEMBERSHIPS.find((p) => p.id === planId) || MEMBERSHIPS[1];
+
+  // Hardware back-button closes the buy modal instead of exiting the site
+  useBrowserBack(open, onClose);
 
   const submit = () => {
     const cleanPhone = phone.replace(/\D/g, '');
@@ -1286,8 +1333,40 @@ function App() {
 
   const scrollToId = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!el) return;
+    // Push a history entry so the phone back button returns to the previous
+    // section instead of exiting the site. Only push if this section isn't
+    // already the current state (avoids duplicate entries on rapid clicks).
+    if (typeof window !== 'undefined') {
+      const cur = window.history.state;
+      if (!cur || cur.__fkSection !== id) {
+        window.history.pushState({ __fkSection: id }, '');
+      }
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+
+  // App-level popstate handler for section navigation: when the browser
+  // back/forward button pops a section state (or back to the initial state),
+  // smoothly scroll to the target. Overlay hooks handle their own popstate
+  // and simply close on back.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const onPop = (e) => {
+      const s = e.state;
+      if (s && s.__fkOverlay) return; // overlay hooks handle these
+      if (s && s.__fkSection) {
+        const el = document.getElementById(s.__fkSection);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (!s) {
+        // Back to the initial (pre-navigation) state = home
+        const el = document.getElementById('home');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   const openBuy = (initial) => {
     setBuyInitial(initial || null);
