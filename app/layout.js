@@ -1,4 +1,5 @@
 import './globals.css';
+import StructuredData from '@/components/StructuredData';
 
 export const metadata = {
   title: 'Fitness Kingdom - Best Premium Gym in Sangli',
@@ -13,6 +14,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <StructuredData />
+      </head>
       <body className="bg-black text-white antialiased">{children}</body>
     </html>
   );
